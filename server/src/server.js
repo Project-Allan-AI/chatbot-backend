@@ -38,7 +38,7 @@ function createServer(){
   app.use('/chatbotTest/api', chatbotTest.router())
 
   app.get('*', (req,res) => {
-    return ('Sorry not a route')
+    res.send('Hello this is Allan AI, please use our chat client to access the magic')
   })
 
   app.listen(process.env.PORT || port, (err) =>{
