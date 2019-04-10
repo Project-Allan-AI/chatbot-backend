@@ -2,7 +2,6 @@ const _ = require('underscore');
 const log = require('../log');
 const handler = require('./handlerController');
 const dialogflow = require('dialogflow');
-const asdfjkl =require('asdfjkl/lib/asdfjkl') ;
 const uuidv4 = require('uuid/v4');
 var pg = require('pg');
 const env = require('../env');
