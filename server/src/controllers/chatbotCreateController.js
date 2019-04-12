@@ -1,6 +1,5 @@
 const _ = require('underscore');
 const env = require('../env');
-const log = require('../log');
 const handler = require('./handlerController');
 const uuidv4 = require('uuid/v4');
 var pg = require('pg');
@@ -16,7 +15,7 @@ const appRoot = path.join(__dirname,'../../../')
 //get all business categories
 exports.getBusinessCategory = function(req,res){
 
-  log.info('getBusinessCategory is called')
+  //log.info('getBusinessCategory is called')
   var client = new pg.Client({
     connectionString: databaseURL
   });
@@ -28,7 +27,7 @@ exports.getBusinessCategory = function(req,res){
     res.json(businessCategory);
   })
   .catch(err=>{
-    log.info(err);
+    //log.info(err);
     if (err.statusCode>=100 && err.statusCode<600) {
       res.status(err.statusCode).json(err);
     } else {
@@ -42,7 +41,7 @@ exports.getBusinessCategory = function(req,res){
 //query param of "businessCategory" needed in the req.auery object
 exports.getBusinessSubtype = function(req,res){
   var businessCategory = req.query.businessCategory;
-  log.info('getBusinessSubtype is called with' + businessCategory)
+  //log.info('getBusinessSubtype is called with' + businessCategory)
   var client = new pg.Client({
     connectionString: databaseURL
   });
@@ -53,7 +52,7 @@ exports.getBusinessSubtype = function(req,res){
     res.json(businessSubtype);
   })
   .catch(err=>{
-    log.info(err);
+    //log.info(err);
     if (err.statusCode>=100 && err.statusCode<600) {
       res.status(err.statusCode).json(err);
     } else {
@@ -69,7 +68,7 @@ exports.getCommonQuestions = function(req, res){
   var businessCategory = req.query.businessCategory;
   var businessSubtype = req.query.businessSubtype;
 
-  log.info('getCommonQeustions is called with '+ businessCategory + ' and ' + businessSubtype)
+  //log.info('getCommonQeustions is called with '+ businessCategory + ' and ' + businessSubtype)
 
   var client = new pg.Client({
     connectionString:databaseURL
@@ -81,7 +80,7 @@ exports.getCommonQuestions = function(req, res){
     res.json(commonQuestions);
   })
   .catch(err=>{
-    log.info(err);
+    //log.info(err);
     if (err.statusCode>=100 && err.statusCode<600) {
       res.status(err.statusCode).json(err);
     } else {
@@ -94,7 +93,7 @@ exports.getCommonQuestions = function(req, res){
 //check if the userID is used already in the business_info business_intent_table
 exports.checkUserID = function(req,res,next){
   const userID = req.body.userID;
-  log.info('checkUserID is called for userID: ' + userID);
+  //log.info('checkUserID is called for userID: ' + userID);
 
   var client = new pg.Client({
     connectionString: databaseURL
@@ -113,7 +112,7 @@ exports.checkUserID = function(req,res,next){
     }
   })
   .catch(err=>{
-    log.info(err);
+    //log.info(err);
     if (err.statusCode>=100 && err.statusCode<600) {
       res.status(err.statusCode).json(err);
     } else {
@@ -122,7 +121,7 @@ exports.checkUserID = function(req,res,next){
   })
   .then(()=>{
     client.end()
-    log.info('userID checked and isDuplicate is: '+ req.body.isDuplicate)
+    //log.info('userID checked and isDuplicate is: '+ req.body.isDuplicate)
     next();
   });
 }
@@ -138,7 +137,7 @@ exports.postUserChats = async function(req, res){
 
   console.log(req.body)
 
-  log.info('postUserChats is called for userID: ' + userID + ' for a ' + businessType.subtype + ' business and duplicate is: ' + isDuplicate)
+  //log.info('postUserChats is called for userID: ' + userID + ' for a ' + businessType.subtype + ' business and duplicate is: ' + isDuplicate)
 
   if(!isDuplicate){
     var client = new pg.Client({
@@ -153,18 +152,18 @@ exports.postUserChats = async function(req, res){
     client.query(querySelectAgent, selectAgentValues)
     .then(result=>{
       if(result.rows.length>1){
-        log.info('more than 1 agent is selected, something is wrong, check database!')
+        //log.info('more than 1 agent is selected, something is wrong, check database!')
         res.status(500).json('more than 1 agent selected some how');
       }else if(result.rows.length<1){
-        log.info('no agent is selected, something is wrong, check database!')
+        //log.info('no agent is selected, something is wrong, check database!')
         res.status(500).json('no agent selected some how');
       } else {
         agentName = result.rows[0].agent;
-        log.info(agentName + ' is selected');
+        //log.info(agentName + ' is selected');
       }
     })
     .catch(err => {
-      log.info('error at query agent name, error: ' + err);
+      //log.info('error at query agent name, error: ' + err);
       if (err.statusCode>=100 && err.statusCode<600) {
         res.status(err.statusCode).json(err);
       } else {
@@ -177,10 +176,10 @@ exports.postUserChats = async function(req, res){
       const infoValues = [userID, businessType.category, businessType.subtype, 'trial', agentName]
       client.query(queryInsertInfo, infoValues)
       .then(result=>{
-        log.info('business info entered');
+        //log.info('business info entered');
       })
       .catch(err => {
-        log.info('error at insert business info, error: ' + err);
+        //log.info('error at insert business info, error: ' + err);
         if (err.statusCode>=100 && err.statusCode<600) {
           res.status(err.statusCode).json(err);
         } else {
@@ -202,7 +201,7 @@ exports.postUserChats = async function(req, res){
 
           client.query(queryAgentInfo, queryAgentInfoValues)
           .then(async result=>{
-            log.info(result.rows[0].project_id + ' is selected');
+            //log.info(result.rows[0].project_id + ' is selected');
             dialogflowProjectId=result.rows[0].project_id;
             dialogflowCredentialPath = path.join(appRoot,result.rows[0].credential_path);
 
@@ -234,10 +233,10 @@ exports.postUserChats = async function(req, res){
               const valuesInsertIntent = flatten(valuesMatrixIntent);
               clientIntent.query(queryInsertIntent, valuesInsertIntent)
               .then(result=>{
-                log.info('custom intents entered: ' + result.rows[0]);
+                //log.info('custom intents entered: ' + result.rows[0]);
               })
               .catch(err => {
-                log.info('error at common intents insert, error: ' + err);
+                //log.info('error at common intents insert, error: ' + err);
                 if (err.statusCode>=100 && err.statusCode<600) {
                   res.status(err.statusCode).json(err);
                 } else {
@@ -246,7 +245,7 @@ exports.postUserChats = async function(req, res){
               })
               .then(()=>{
                 clientIntent.end()
-                log.info('custom questions intents entered')
+                //log.info('custom questions intents entered')
               })
             }
 
@@ -260,10 +259,10 @@ exports.postUserChats = async function(req, res){
               clientNoIntent.connect();
               clientNoIntent.query(queryInsertNoIntent, valuesInsertNoIntent)
               .then(result=>{
-                log.info('custom intents entered: ' + result.rows[0]);
+                //log.info('custom intents entered: ' + result.rows[0]);
               })
               .catch(err => {
-                log.info('error at common intents insert, error: ' + err);
+                //log.info('error at common intents insert, error: ' + err);
                 if (err.statusCode>=100 && err.statusCode<600) {
                   res.status(err.statusCode).json(err);
                 } else {
@@ -272,7 +271,7 @@ exports.postUserChats = async function(req, res){
               })
               .then(()=>{
                 clientNoIntent.end()
-                log.info('custom questions undetected intents entered')
+                //log.info('custom questions undetected intents entered')
               })
             }
 
@@ -294,10 +293,10 @@ exports.postUserChats = async function(req, res){
               clientCommon.connect();
               clientCommon.query(queryInsertIntent, insertValues)
               .then(result=>{
-                log.info('common intents entered: ' + result.rows[0]);
+                //log.info('common intents entered: ' + result.rows[0]);
               })
               .catch(err => {
-                log.info('error at common intents insert, error: ' + err);
+                //log.info('error at common intents insert, error: ' + err);
                 if (err.statusCode>=100 && err.statusCode<600) {
                   res.status(err.statusCode).json(err);
                 } else {
@@ -306,13 +305,13 @@ exports.postUserChats = async function(req, res){
               })
               .then(()=>{
                 clientCommon.end()
-                log.info('common questions intents entered')
+                //log.info('common questions intents entered')
               })
             }
 
           })
           .catch(err=>{
-            log.info('error at query agent name, ' + err);
+            //log.info('error at query agent name, ' + err);
             if (err.statusCode>=100 && err.statusCode<600) {
               res.status(err.statusCode).json(err);
             } else {

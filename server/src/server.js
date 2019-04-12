@@ -1,5 +1,3 @@
-const log = require('./log')
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
@@ -15,11 +13,6 @@ module.exports = createServer();
 function createServer(){
 
   let port = 5000;
-
-  const errorFile = fs.createWriteStream('./logs/errors.log', { flags: 'a' });
-  process.__defineGetter__('stderr', () => {
-    return errorFile;
-  });
 
   const app = express();
 
@@ -44,7 +37,7 @@ function createServer(){
   app.listen(process.env.PORT || port, (err) =>{
     if (err) throw err
     console.log(`Allan AI backend is listening on port ${port}`);
-    log.info(`Allan AI backend listening on port ${port}}`);
+    //log.info(`Allan AI backend listening on port ${port}}`);
   })
 
 
@@ -55,6 +48,6 @@ function createServer(){
 }
 
 function shutdown () {
-  log.info('Stopping...');
+  //log.info('Stopping...');
   process.exit();
 }

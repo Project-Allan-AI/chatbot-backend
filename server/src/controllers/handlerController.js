@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('underscore');
-var log = require('../log');
 var uuid = require('uuid');
 
 module.exports = {
@@ -22,7 +21,7 @@ function requestLogging (req, res, next) {
       correlationId: req.id
     }, _.isEmpty);
 
-    log.info(obj, 'API request');
+    //log.info(obj, 'API request');
   }
 
   next();
