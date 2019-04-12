@@ -73,6 +73,10 @@ typings/
 # dotenv environment variables file
 .env
 
+#gcloud yaml
+secrets.yaml
+app.yaml
+
 # next.js build output
 .next
 

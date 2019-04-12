@@ -3,14 +3,13 @@ const handler = require('./handlerController');
 const dialogflow = require('dialogflow');
 const uuidv4 = require('uuid/v4');
 var pg = require('pg');
-const env = require('../env');
 const path = require('path');
 const businessHoursHelper = require('../helpers/businessHoursHelper')
 const googleCalendar = require('../helpers/googleCalendarHelper')
 
 pg.defaults.ssl = true;
 
-const databaseURL = env.databaseURI;
+const databaseURL = process.env.BOWWOW_DATABASE_URI;
 const appRoot = path.join(__dirname,'../../../')
 
 module.exports = {

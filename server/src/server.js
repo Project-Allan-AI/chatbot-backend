@@ -7,6 +7,7 @@ const chatbot = require('./routes/chatBot');
 const chatbotCreate = require('./routes/chatbotCreate')
 const chatbotTest = require('./routes/chatbotTest')
 const cors = require('cors')
+require('dotenv').config()
 
 module.exports = createServer();
 

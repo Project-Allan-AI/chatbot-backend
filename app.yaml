@@ -13,4 +13,6 @@
 
 # [START Allan_AI_Backend_yaml]
 runtime: nodejs10
+env_variables:
+  BOWWOW_DATABASE_URI: "postgres://zocrtvuvkuhpyp:d25bf7914e4b045b1e81a4c515dfa1ee51c2698bd6536c6a4d108942e52d2bec@ec2-23-21-86-22.compute-1.amazonaws.com:5432/d3mbonpr4jst12"
 # [END Allan_AI_Backend_yaml]
