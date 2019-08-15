@@ -6,10 +6,12 @@ var pg = require('pg');
 const path = require('path');
 const businessHoursHelper = require('../helpers/businessHoursHelper')
 const googleCalendar = require('../helpers/googleCalendarHelper')
+const env = require("../env")
 
 pg.defaults.ssl = true;
 
-const databaseURL = process.env.BOWWOW_DATABASE_URI;
+//const databaseURL = process.env.BOWWOW_DATABASE_URI;
+const databaseURL = env.databaseURI;
 const appRoot = path.join(__dirname,'../../../')
 
 module.exports = {
@@ -55,6 +57,8 @@ function getAgent(req, rex, next){
   var client = new pg.Client({
     connectionString: databaseURL
   });
+
+  console.log(req.body.userID);
   client.connect();
 
   client.query('SELECT business_agent FROM business_info WHERE business_id = $1', [req.body.userID])
