@@ -1,3 +1,5 @@
+const log = require('./log')
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
@@ -7,13 +9,19 @@ const chatbot = require('./routes/chatBot');
 const chatbotCreate = require('./routes/chatbotCreate')
 const chatbotTest = require('./routes/chatbotTest')
 const cors = require('cors')
+const env = require('./env')
 //require('dotenv').config()
 
 module.exports = createServer();
 
 function createServer(){
 
-  let port = 5000;
+  let port = env.backendPort;
+
+  const errorFile = fs.createWriteStream('./logs/errors.log', { flags: 'a' });
+  process.__defineGetter__('stderr', () => {
+    return errorFile;
+  });
 
   const app = express();
 

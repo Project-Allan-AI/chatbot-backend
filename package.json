@@ -29,10 +29,13 @@
     "jss": "latest",
     "pg": "^7.12.1",
     "request-promise": "^4.2.2",
+    "save": "^2.4.0",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "log4js": "^5.0.0",
+    "fs": "0.0.1-security"
   }
 }
